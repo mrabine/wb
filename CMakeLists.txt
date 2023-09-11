@@ -18,7 +18,7 @@ string(REGEX REPLACE "[0-9]+\\.([0-9])+\\.[0-9]+.*" "\\1" VERSION_MINOR ${VERSIO
 string(REGEX REPLACE "[0-9]+\\.[0-9]+\\.([0-9]+).*" "\\1" VERSION_PATCH ${VERSION})
 
 message(STATUS "${PROJECT_NAME} version: ${VERSION}")
-configure_file("${PROJECT_SOURCE_DIR}/version.h.in" "${PROJECT_SOURCE_DIR}/src/version.h")
+configure_file("${PROJECT_SOURCE_DIR}/version.hpp.in" "${PROJECT_SOURCE_DIR}/src/version.hpp")
 
 find_package(Join REQUIRED)
 include_directories(${JOIN_INCLUDE_DIRS})

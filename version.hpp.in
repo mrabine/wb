@@ -1,5 +1,5 @@
-#ifndef __WB_VERSION_H__
-#define __WB_VERSION_H__
+#ifndef __WB_VERSION_HPP__
+#define __WB_VERSION_HPP__
 
 #define BINARY_NAME     "@PROJECT_NAME@"
 
