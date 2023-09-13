@@ -20,17 +20,16 @@ string(REGEX REPLACE "[0-9]+\\.[0-9]+\\.([0-9]+).*" "\\1" VERSION_PATCH ${VERSIO
 message(STATUS "${PROJECT_NAME} version: ${VERSION}")
 configure_file("${PROJECT_SOURCE_DIR}/version.hpp.in" "${PROJECT_SOURCE_DIR}/src/version.hpp")
 
-find_package(Join REQUIRED)
-include_directories(${JOIN_INCLUDE_DIRS})
-
-find_package(OpenSSL REQUIRED)
-include_directories(${OPENSSL_INCLUDE_DIRS})
-
-find_package(ZLIB REQUIRED)
-include_directories(${ZLIB_INCLUDE_DIRS})
+include(FetchContent)
+FetchContent_Declare(
+    join
+    GIT_REPOSITORY https://github.com/joinframework/join.git
+    GIT_TAG        v1.1.3
+)
+FetchContent_MakeAvailable(join)
 
 add_executable(${PROJECT_NAME} src/main.cpp)
 target_include_directories(${PROJECT_NAME} PRIVATE src)
-target_link_libraries(${PROJECT_NAME} ${JOIN_LIBRARIES} ${OPENSSL_LIBRARIES} ${ZLIB_LIBRARIES} pthread)
+target_link_libraries(${PROJECT_NAME} join pthread)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION /bin)
