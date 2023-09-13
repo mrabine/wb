@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.1.0)
 project(wb)
 
-# Add custom CMake modules.
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-
 # Require C++20 support, prefer ISO C++ over GNU variants
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -19,6 +16,8 @@ string(REGEX REPLACE "[0-9]+\\.[0-9]+\\.([0-9]+).*" "\\1" VERSION_PATCH ${VERSIO
 
 message(STATUS "${PROJECT_NAME} version: ${VERSION}")
 configure_file("${PROJECT_SOURCE_DIR}/version.hpp.in" "${PROJECT_SOURCE_DIR}/src/version.hpp")
+
+option(BUILD_SHARED_LIBS "Build as shared libraries." OFF)
 
 include(FetchContent)
 FetchContent_Declare(

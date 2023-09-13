@@ -5,3 +5,70 @@
 [![GitHub License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/mrabine/wb/blob/main/LICENSE)
 
 **web bench** is a web server benchmarking tool for debug purpose
+
+## Download
+
+To download the latest source do this:
+```bash
+git clone https://github.com/mrabine/wb.git
+```
+
+## Configuration
+
+To configure wb do this:
+```bash
+cd wb
+mkdir build && cd build
+cmake ..
+```
+
+## Installation
+
+To install wb do this:
+```bash
+make && sudo make install
+```
+
+## Usage
+
+**wb** [options] [http[s]://]hostname[:port]/path
+
+**-c**\
+&emsp;concurrency level\
+**-h**\
+&emsp;show available options\
+**-k**\
+&emsp;enable keep alive\
+**-n requests**\
+&emsp;number of requests to perform\
+**-t**\
+&emsp;request timeout in seconds\
+**-v**\
+&emsp;verbose\
+**-V**\
+&emsp;print version
+
+## Example
+
+```bash
+wb -c 2 -n 1000 -k https://192.168.0.217/
+
+benchmarking "192.168.0.217" on port 443 ...
+
+Server Hostname:        192.168.0.217
+Server Port:            443
+
+Scheme:                 https
+Document Path:          /
+
+Concurrency Level:      2
+Time taken for tests:   0.293823 seconds
+Completed requests:     1000
+Failed requests:        0
+Requests per second:    3403.41 [#/sec]
+```
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+

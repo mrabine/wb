@@ -63,8 +63,8 @@ void usage ()
     std::cout << "Options" << std::endl;
     std::cout << "  -c                concurrency level" << std::endl;
     std::cout << "  -h                show available options" << std::endl;
-    std::cout << "  -k                keep alive" << std::endl;
-    std::cout << "  -n requests       number of requests" << std::endl;
+    std::cout << "  -k                enable keep alive" << std::endl;
+    std::cout << "  -n requests       number of requests to perform" << std::endl;
     std::cout << "  -t                request timeout in seconds" << std::endl;
     std::cout << "  -v                verbose" << std::endl;
     std::cout << "  -V                print version" << std::endl;
