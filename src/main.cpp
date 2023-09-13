@@ -58,7 +58,7 @@ void version ()
 void usage ()
 {
     std::cout << "Usage" << std::endl;
-    std::cout << "  " << BINARY_NAME << " [options] [http[s]://]hostname[:port]/path" << std::endl;
+    std::cout << "  " << BINARY_NAME << " [options] http[s]://hostname[:port]/path" << std::endl;
     std::cout << std::endl;
     std::cout << "Options" << std::endl;
     std::cout << "  -c                concurrency level" << std::endl;
