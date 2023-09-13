@@ -2,6 +2,7 @@
 
 [![Security Status](https://github.com/mrabine/wb/workflows/security/badge.svg)](https://github.com/mrabine/wb/security/code-scanning)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/96362326939a46bd8673b5b70f8654f7)](https://app.codacy.com/gh/mrabine/wb/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![GitHub Releases](https://img.shields.io/github/release/mrabine/wb.svg)](https://github.com/mrabine/wb/releases/latest)
 [![GitHub License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/mrabine/wb/blob/main/LICENSE)
 
 **web bench** is a web server benchmarking tool for debug purpose
@@ -15,7 +16,7 @@ git clone https://github.com/mrabine/wb.git
 
 ## Configuration
 
-To configure wb do this:
+To configure **wb** do this:
 ```bash
 cd wb
 mkdir build && cd build
@@ -24,7 +25,7 @@ cmake ..
 
 ## Installation
 
-To install wb do this:
+To install **wb** do this:
 ```bash
 make && sudo make install
 ```
@@ -51,11 +52,11 @@ make && sudo make install
 ## Example
 
 ```bash
-wb -c 2 -n 1000 -k https://192.168.0.217/
+wb -c 2 -n 1000 -k https://foo.bar/
 
-benchmarking "192.168.0.217" on port 443 ...
+benchmarking "foo.bar" on port 443 ...
 
-Server Hostname:        192.168.0.217
+Server Hostname:        foo.bar
 Server Port:            443
 
 Scheme:                 https
