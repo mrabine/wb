@@ -32,7 +32,7 @@ make && sudo make install
 
 ## Usage
 
-**wb** \[options] \[http\[s]://]hostname\[:port]/path
+**wb** \[options] http\[s]://hostname\[:port]/path
 
 **-c**\
 &emsp;concurrency level\
