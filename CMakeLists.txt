@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.1.0)
 project(wb)
 
+# Add custom CMake modules.
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
 # Require C++20 support, prefer ISO C++ over GNU variants
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -22,10 +25,19 @@ option(BUILD_SHARED_LIBS "Build as shared libraries." OFF)
 include(FetchContent)
 FetchContent_Declare(
     join
-    GIT_REPOSITORY https://github.com/joinframework/join.git
-    GIT_TAG        v1.1.3
+    GIT_REPOSITORY    https://github.com/joinframework/join.git
+    GIT_TAG           v1.1.3
+    FIND_PACKAGE_ARGS Join
 )
 FetchContent_MakeAvailable(join)
+
+include_directories(${JOIN_INCLUDE_DIRS})
+
+find_package(OpenSSL REQUIRED)
+include_directories(${OPENSSL_INCLUDE_DIRS})
+
+find_package(ZLIB REQUIRED)
+include_directories(${ZLIB_INCLUDE_DIRS})
 
 add_executable(${PROJECT_NAME} src/main.cpp)
 target_include_directories(${PROJECT_NAME} PRIVATE src)
