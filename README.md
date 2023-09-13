@@ -52,21 +52,21 @@ make && sudo make install
 ## Example
 
 ```bash
-wb -c 2 -n 1000 -k https://foo.bar/
+wb -c 2 -n 1000 -k https://joinframework.net/
 
-benchmarking "foo.bar" on port 443 ...
+benchmarking "joinframework.net" on port 443 ...
 
-Server Hostname:        foo.bar
+Server Hostname:        joinframework.net
 Server Port:            443
 
 Scheme:                 https
 Document Path:          /
 
 Concurrency Level:      2
-Time taken for tests:   0.293823 seconds
+Time taken for tests:   2.19605 seconds
 Completed requests:     1000
 Failed requests:        0
-Requests per second:    3403.41 [#/sec]
+Requests per second:    455.363 [#/sec]
 ```
 
 ## License
