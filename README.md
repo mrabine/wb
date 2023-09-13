@@ -15,7 +15,7 @@ git clone https://github.com/mrabine/wb.git
 
 ## Configuration
 
-To configure wb do this:
+To configure **wb** do this:
 ```bash
 cd wb
 mkdir build && cd build
@@ -24,7 +24,7 @@ cmake ..
 
 ## Installation
 
-To install wb do this:
+To install **wb** do this:
 ```bash
 make && sudo make install
 ```
@@ -51,11 +51,11 @@ make && sudo make install
 ## Example
 
 ```bash
-wb -c 2 -n 1000 -k https://192.168.0.217/
+wb -c 2 -n 1000 -k https://foo.bar/
 
-benchmarking "192.168.0.217" on port 443 ...
+benchmarking "foo.bar" on port 443 ...
 
-Server Hostname:        192.168.0.217
+Server Hostname:        foo.bar
 Server Port:            443
 
 Scheme:                 https
