@@ -17,8 +17,6 @@ string(REGEX REPLACE "[0-9]+\\.[0-9]+\\.([0-9]+).*" "\\1" VERSION_PATCH ${VERSIO
 message(STATUS "${PROJECT_NAME} version: ${VERSION}")
 configure_file("${PROJECT_SOURCE_DIR}/version.hpp.in" "${PROJECT_SOURCE_DIR}/src/version.hpp")
 
-option(BUILD_SHARED_LIBS "Build as shared libraries." OFF)
-
 include(FetchContent)
 FetchContent_Declare(
     join
