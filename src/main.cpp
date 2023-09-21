@@ -64,7 +64,7 @@ void usage ()
     std::cout << "  " << BINARY_NAME << " [options] http[s]://hostname[:port]/path" << std::endl;
     std::cout << std::endl;
     std::cout << "Options" << std::endl;
-    std::cout << "  -c                concurrency level (default: 1)" << std::endl;
+    std::cout << "  -c level          concurrency level (default: 1)" << std::endl;
     std::cout << "  -h                show available options" << std::endl;
     std::cout << "  -H                send HEAD request" << std::endl;
     std::cout << "  -K                enable keep alive" << std::endl;

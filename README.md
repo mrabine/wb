@@ -34,7 +34,7 @@ make && sudo make install
 
 **wb** \[options] http\[s]://hostname\[:port]/path
 
-**-c**\
+**-c level**\
 &emsp;concurrency level (default: 1)\
 **-h**\
 &emsp;show available options\
