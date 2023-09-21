@@ -35,15 +35,21 @@ make && sudo make install
 **wb** \[options] http\[s]://hostname\[:port]/path
 
 **-c**\
-&emsp;concurrency level\
+&emsp;concurrency level (default: 1)\
 **-h**\
 &emsp;show available options\
+**-H**\
+&emsp;send HEAD request\
 **-k**\
 &emsp;enable keep alive\
 **-n requests**\
-&emsp;number of requests to perform\
+&emsp;number of requests to perform (default: 1)\
+**-P file**\
+&emsp;file to POST (mime type is deduced from file extension)\
 **-t**\
 &emsp;request timeout in seconds\
+**-U file**\
+&emsp;file to PUT (mime type is deduced from file extension)\
 **-v**\
 &emsp;verbose\
 **-V**\
@@ -52,9 +58,28 @@ make && sudo make install
 ## Example
 
 ```bash
-wb -c 2 -n 1000 -k https://joinframework.net/
+wb -v https://joinframework.net/
 
 benchmarking "joinframework.net" on port 443 ...
+
+GET / HTTP/1.1
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4
+Connection: close
+Host: joinframework.net
+If-Modified-Since: Sat, 1 Jan 2000 00:00:00 GMT
+User-Agent: wb/1.0.0
+
+HTTP/1.1 200 OK
+Accept-Ranges: bytes
+Connection: close
+Content-Length: 1474
+Content-Type: text/html
+Date: Thu, 21 Sep 2023 10:03:59 GMT
+ETag: "5c2-5c8786d2d515c"
+Last-Modified: Sun, 01 Aug 2021 05:07:16 GMT
+Vary: Accept-Encoding
+
 
 Server Hostname:        joinframework.net
 Server Port:            443
@@ -62,14 +87,13 @@ Server Port:            443
 Scheme:                 https
 Document Path:          /
 
-Concurrency Level:      2
-Time taken for tests:   2.19605 seconds
-Completed requests:     1000
+Concurrency Level:      1
+Time taken for tests:   0.0178217 seconds
+Completed requests:     1
 Failed requests:        0
-Requests per second:    455.363 [#/sec]
+Requests per second:    56.1113 [#/sec]
 ```
 
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
