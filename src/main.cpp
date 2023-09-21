@@ -156,7 +156,7 @@ int main (int argc, char *argv[])
 {
     HttpRequest request;
     int tasks = 1, max = 1, timeout = 5;
-    bool verbose = true;
+    bool verbose = false;
     std::string file;
 
     int opt;
