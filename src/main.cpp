@@ -27,9 +27,12 @@
 
 // libjoin.
 #include <join/httpclient.hpp>
+#include <join/filesystem.hpp>
 #include <join/utils.hpp>
 
 // C++.
+#include <filesystem>
+#include <fstream>
 #include <future>
 
 using join::Resolver;
@@ -61,11 +64,14 @@ void usage ()
     std::cout << "  " << BINARY_NAME << " [options] http[s]://hostname[:port]/path" << std::endl;
     std::cout << std::endl;
     std::cout << "Options" << std::endl;
-    std::cout << "  -c                concurrency level" << std::endl;
+    std::cout << "  -c                concurrency level (default: 1)" << std::endl;
     std::cout << "  -h                show available options" << std::endl;
-    std::cout << "  -k                enable keep alive" << std::endl;
-    std::cout << "  -n requests       number of requests to perform" << std::endl;
+    std::cout << "  -H                send HEAD request" << std::endl;
+    std::cout << "  -K                enable keep alive" << std::endl;
+    std::cout << "  -n requests       number of requests to perform (default: 1)" << std::endl;
+    std::cout << "  -P file           file to POST (mime type is deduced from file extension)" << std::endl;
     std::cout << "  -t                request timeout in seconds" << std::endl;
+    std::cout << "  -U file           file to PUT (mime type is deduced from file extension)" << std::endl;
     std::cout << "  -v                verbose" << std::endl;
     std::cout << "  -V                print version" << std::endl;
 }
@@ -75,14 +81,23 @@ void usage ()
 //   METHOD    : benchmark
 // =========================================================================
 template <class Client>
-void benchmark (const std::string& host, uint16_t port, HttpRequest request, int timeout, int max, bool verbose)
+void benchmark (const std::string& host, uint16_t port, HttpRequest request, const std::string& file, int timeout, int max, bool verbose)
 {
-    Client client (host, port);
+    Client client (host, port, false);
     client.timeout (timeout * 1000);
 
     while (nreq++ < max)
     {
         HttpResponse response;
+
+        // send request headers.
+        if (client.send (request) == -1)
+        {
+            ++nfail;
+            client.disconnect ();
+            client.close ();
+            continue;
+        }
 
         if (verbose)
         {
@@ -90,7 +105,17 @@ void benchmark (const std::string& host, uint16_t port, HttpRequest request, int
             std::cout << request.dumpHeaders ();
         }
 
-        if ((client.send (request) == -1) || (client.receive (response) == -1))
+        // send payload.
+        std::fstream fi (file);
+        if (fi.is_open ())
+        {
+            client << fi.rdbuf ();
+            client.flush ();
+            fi.close ();
+        }
+
+        // read response headers.
+        if (client.receive (response) == -1)
         {
             ++nfail;
             client.disconnect ();
@@ -104,6 +129,7 @@ void benchmark (const std::string& host, uint16_t port, HttpRequest request, int
             std::cout << response.dumpHeaders ();
         }
 
+        // read payload.
         if (response.contentLength ())
         {
             std::string payload;
@@ -128,11 +154,13 @@ void benchmark (const std::string& host, uint16_t port, HttpRequest request, int
 // =========================================================================
 int main (int argc, char *argv[])
 {
-    int tasks = 1, requests = 1, timeout = 5;
-    bool keepalive = false, verbose = false;
+    HttpRequest request;
+    int tasks = 1, max = 1, timeout = 5;
+    bool verbose = true;
+    std::string file;
 
     int opt;
-    while ((opt = getopt (argc, argv, "c:hkn:t:vV")) != -1)
+    while ((opt = getopt (argc, argv, "c:hHKn:P:t:U:vV")) != -1)
     {
         switch (opt)
         {
@@ -142,15 +170,30 @@ int main (int argc, char *argv[])
             case 'h':
                 usage ();
                 _exit (EXIT_SUCCESS);
-            case 'k':
-                keepalive = true;
+            case 'H':
+                request.method (HttpMethod::Head);
+                break;
+            case 'K':
+                request.header ("Connection", "keep-alive");
                 break;
             case 'n':
-                requests = std::stoi (optarg);
+                max = std::stoi (optarg);
             break;
+            case 'P':
+                file = optarg;
+                request.method (HttpMethod::Post);
+                request.header ("Content-Type", join::mime (file));
+                request.header ("Content-Length", std::to_string (std::filesystem::file_size (file)));
+                break;
             case 't':
                 timeout = std::stoi (optarg);
             break;
+            case 'U':
+                file = optarg;
+                request.method (HttpMethod::Put);
+                request.header ("Content-Type", join::mime (file));
+                request.header ("Content-Length", std::to_string (std::filesystem::file_size (file)));
+                break;
             case 'v':
                 verbose = true;
             break;
@@ -197,13 +240,9 @@ int main (int argc, char *argv[])
     uint16_t    port   = match[3].length () ? uint16_t (std::stoi (match[3])) : Resolver::resolveService (scheme);
     std::string path   = match[4];
 
-    HttpRequest request;
-    request.method (HttpMethod::Get);
     request.path   (path);
     request.header ("Accept-Language", "fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4");
     request.header ("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-    request.header ("Connection", keepalive ? "keep-alive" : "close");
-    request.header ("Host", host + ":" + std::to_string (port));
     request.header ("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
     request.header ("User-Agent", BINARY_NAME "/" VERSION_MAJOR "." VERSION_MINOR "." VERSION_PATCH);
 
@@ -219,11 +258,11 @@ int main (int argc, char *argv[])
     {
         if (scheme == "https")
         {
-            futures.push_back (std::async (std::launch::async, benchmark <Https::Client>, host, port, request, timeout, requests, verbose));
+            futures.push_back (std::async (std::launch::async, benchmark <Https::Client>, host, port, request, file, timeout, max, verbose));
         }
         else
         {
-            futures.push_back (std::async (std::launch::async, benchmark <Http::Client>, host, port, request, timeout, requests,verbose));
+            futures.push_back (std::async (std::launch::async, benchmark <Http::Client>, host, port, request, file, timeout, max, verbose));
         }
     }
 
