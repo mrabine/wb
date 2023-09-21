@@ -136,7 +136,7 @@ void benchmark (const std::string& host, uint16_t port, HttpRequest request, con
             payload.resize (response.contentLength ());
             client.read (&payload[0], payload.size ());
         }
-        else if (response.header ("Transfert-Encoding").find ("chunked") != std::string::npos)
+        else if (response.header ("Transfer-Encoding").find ("chunked") != std::string::npos)
         {
             std::string payload;
             payload.resize (4096);
