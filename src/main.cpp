@@ -289,5 +289,5 @@ int main (int argc, char *argv[])
     std::cout << "Requests per second:    " << nreq / elapsed.count () << " [#/sec]" << std::endl;
     std::cout << std::endl;
 
-    _exit ( EXIT_SUCCESS );
+    _exit (EXIT_SUCCESS);
 }
