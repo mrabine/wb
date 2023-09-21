@@ -28,6 +28,7 @@ cmake ..
 To install **wb** do this:
 ```bash
 make && sudo make install
+sudo ldconfig
 ```
 
 ## Usage
@@ -40,7 +41,7 @@ make && sudo make install
 &emsp;show available options\
 **-H**\
 &emsp;send HEAD request\
-**-k**\
+**-K**\
 &emsp;enable keep alive\
 **-n requests**\
 &emsp;number of requests to perform (default: 1)\
